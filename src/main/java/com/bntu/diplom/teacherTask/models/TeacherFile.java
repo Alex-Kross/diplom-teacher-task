@@ -33,7 +33,7 @@ public class TeacherFile {
     @Lob
     private byte[] bytes;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER )
 //    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 

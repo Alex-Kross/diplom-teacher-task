@@ -1,19 +1,13 @@
 package com.bntu.diplom.teacherTask.models;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 
@@ -21,6 +15,7 @@ import java.time.LocalDate;
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Student {
     @Id
@@ -32,11 +27,31 @@ public class Student {
     private String name;
     private String surname;
     private String patronymic;
-    private String numberCourse;
-    private LocalDate dateAdmission;
     private String email;
     private String phone;
-//    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    private String parentFullName;
+    private String parentEmail;
+    private String parentPhone;
+
+    public Student(
+            Long ordinalNumber, String name,
+            String surname, String patronymic,
+            String email, String phone, String parentFullName,
+            String parentEmail, String parentPhone, Group group) {
+
+        this.ordinalNumber = ordinalNumber;
+        this.name = name;
+        this.surname = surname;
+        this.patronymic = patronymic;
+        this.email = email;
+        this.phone = phone;
+        this.parentFullName = parentFullName;
+        this.parentEmail = parentEmail;
+        this.parentPhone = parentPhone;
+        this.group = group;
+    }
+
+    //    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 //    @ManyToOne
 //    @JoinColumn(
 //            name = "student_group_id",
@@ -47,5 +62,5 @@ public class Student {
 //            )
 //    )
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private StudentGroup studentGroup;
+    private Group group;
 }

@@ -18,16 +18,17 @@
     <h3>Учителей нет</h3>
 </#list>
 <hr>
-<h3>Создать новый товар</h3>
+<h3>Создать нового учителя</h3>
 <form action="/teachers/teacher/create" method="post" enctype="multipart/form-data">
-    Имя: <input type="text" name="name"/><br><br>
-    Фамилия: <input type="text" name="surname"/><br><br>
-    Отчетсво: <input type="text" name="patronymic"/><br><br>
+    Имя: <input type="text" name="surname"/><br><br>
+    Отчетсво: <input type="text" name="name"/><br><br>
+    Фамилия: <input type="text" name="patronymic"/><br><br>
     почта: <input type="email" name="email"/><br><br>
     пароль: <input type="text" name="password"/><br><br>
     должность: <input type="text" name="position"/><br><br>
 
     Первая фотография: <input type="file" name="file1"/><br><br>
+    <input type="hidden" name="_csrf" value="${_csrf.token}">
     <input type="submit" value="Добавить Учителей"/>
 </form>
 </body>

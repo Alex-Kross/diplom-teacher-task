@@ -13,11 +13,12 @@
 <b>Имя: </b>${teacher.name}<br>
 <b>Фамилия: </b>${teacher.surname}<br>
 <b>Отчетсво: </b>${teacher.patronymic}<br>
+<b>Должность: </b>${teacher.position}<br>
 <b>email: </b>${teacher.email}<br>
 <b>пароль: </b>${teacher.password}<br>
-<b>Должность: </b>${teacher.position}<br>
 <hr>
 <form action="/teachers/teacher/delete/${teacher.id}" method="post">
+    <input type="hidden" name="_csrf" value="${_csrf.token}">
     <input type="submit" value="Удалить учителя"/>
 </form>
 </body>
