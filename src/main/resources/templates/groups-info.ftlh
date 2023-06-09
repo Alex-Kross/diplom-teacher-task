@@ -5,18 +5,59 @@
 </head>
 <body>
 <h1>BUYSELL</h1><hr>
-<#--<#list files as img>-->
-<#--    <img src="/images/${img.id}" height="60px"/><br><br>-->
+<#--<#list files as file>-->
+<#--    <a href="/files/${file.id}"  download="" title="всплывающая подсказка">скачать файл ${file.fileName}</a>-->
+<#--&lt;#&ndash;    <img src="/files/${file.id}" height="20px"/><br><br>&ndash;&gt;-->
 <#--</#list>-->
+<#--<#if group.name??>-->
 <h4>Подробная информация о группе</h4>
 <b>Номер группы: </b>${group.name}<br>
 <b>Факультет: </b>${group.facultyName}<br>
 <b>Университет: </b>${group.universityName}<br>
 <hr>
-Загрузить список студентов: <input type="file" name="file1"/><br><br>
+<#--<#else>-->
+<#--    <a href="/login">Войти</a></h1>-->
+<#--</#if>-->
 <form action="/group/delete/${group.id}" method="post">
     <input type="hidden" name="_csrf" value="${_csrf.token}">
     <input type="submit" value="Удалить группу"/>
 </form>
+
+<form action="/group/${group.id}/subject/create" method="post">
+    Название предмета: <input type="text" name="name"/><br><br>
+    <input type="hidden" name="_csrf" value="${_csrf.token}">
+    <input type="submit" value="Создать предмет"/>
+</form>
+<#--<#if !students.isEmpty()>-->
+<table>
+    <tr class="tableHeader">
+        <td>Фамилия имя отчество</td>
+        <td>Email</td>
+        <td>Телефон</td>
+        <td>ФИО родителя</td>
+        <td>Email родителя</td>
+        <td>Телефон родителя</td>
+    </tr>
+<#--    <#foreach student in students>-->
+    <#list students as student>
+        <tr class="tableBody">
+            <td>${student.surname} ${student.name} ${student.patronymic}  </td>
+            <td>${student.email}</td>
+            <td>${student.phone}</td>
+            <td>${student.parentFullName}</td>
+            <td>${student.parentEmail}</td>
+            <td>${student.parentPhone}</td>
+<#--            <td>${order.ioGuid}</td>-->
+<#--            <td>${order.lastUpdateDate?datetime}</td>-->
+<#--            <td>${order.lastUpdatedByUser}</td>-->
+        </tr>
+    <#else>
+        <h3>Список студентов не добавлен</h3>
+    </#list>
+<#--    </#foreach>-->
+</table>
+<#--<#else>-->
+<#--    <h3>Список студентов не добавлен</h3>-->
+<#--</#if>-->
 </body>
 </html>

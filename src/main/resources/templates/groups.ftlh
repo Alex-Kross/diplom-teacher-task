@@ -29,14 +29,21 @@
 </#list>
 <#if teacher.email??>
 <hr>
-<h3>Создать новую группу</h3>
-<form action="/group/create" method="post">
-    Номер группы: <input type="text" name="name"/><br><br>
-    Факультет: <input type="text" name="facultyName"/><br><br>
-    Университет: <input type="text" name="universityName"/><br><br>
-    <input type="hidden" name="_csrf" value="${_csrf.token}">
-    <input type="submit" value="Добавить группу"/>
-</form>
+    <form action="/group/create-page" method="get">
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <input type="submit" value="Добавить группу" />
+    </form>
+<#--<button type="button" value="Добавить группу" href=""/>-->
+<#--<h3>Создать новую группу</h3>-->
+<#--<form action="/group/create" method="post" enctype="multipart/form-data">-->
+<#--    Номер группы: <input type="text" name="name"/><br><br>-->
+<#--    Факультет: <input type="text" name="facultyName"/><br><br>-->
+<#--    Университет: <input type="text" name="universityName"/><br><br>-->
+
+<#--    Загрузить список студентов: <input type="file" name="listStudentFile"/><br><br>-->
+<#--    <input type="hidden" name="_csrf" value="${_csrf.token}">-->
+<#--    <input type="submit" value="Добавить группу"/>-->
+<#--</form>-->
 </#if>
 </body>
 </html>

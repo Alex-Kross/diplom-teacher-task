@@ -9,31 +9,19 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 @Entity
-@Table(name = "student_group")
-public class Group {
+public class Subject {
     @Id
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
-    @Column(name="group_id")
+    @Column(name="subject_id")
     private Long id;
     private String name;
-    private String facultyName;
-    private String universityName;
-//    private String subject;
-
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teacher")
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")
-    private List<Student> students = new ArrayList<>();
-
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group_id")
-//    private List<TeacherGroup> teacherGroups = new ArrayList<>();
 
     @ManyToMany( cascade =
             {
@@ -42,9 +30,9 @@ public class Group {
                     CascadeType.REFRESH,
                     CascadeType.PERSIST
             })
-    @JoinTable(name = "teacher_student_group",
+    @JoinTable(name = "teacher_subject",
             joinColumns = {
-                    @JoinColumn(name = "group_id")
+                    @JoinColumn(name = "subject_id")
             },
             inverseJoinColumns = {
                     @JoinColumn(name = "teacher_id")

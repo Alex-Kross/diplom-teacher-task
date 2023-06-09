@@ -8,4 +8,7 @@ import java.util.List;
 public interface GroupRepository extends
         JpaRepository<Group, Long> {
     List<Group> findByName(String name);
+
+    @Override
+    List<Group> findAll();
 }

@@ -9,7 +9,7 @@
     <a href="/files/${file.id}"  download="" title="всплывающая подсказка">скачать файл ${file.fileName}</a>
 <#--    <img src="/files/${file.id}" height="20px"/><br><br>-->
 </#list>
-<h4>Подробная информация о группе</h4>
+<h4>Подробная информация о преподе</h4>
 <b>Имя: </b>${teacher.name}<br>
 <b>Фамилия: </b>${teacher.surname}<br>
 <b>Отчетсво: </b>${teacher.patronymic}<br>

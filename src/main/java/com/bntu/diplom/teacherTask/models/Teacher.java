@@ -43,6 +43,9 @@ public class Teacher implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teacher")
     private List<TeacherFile> teacherFiles = new ArrayList<>();
 
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teacher_id")
+//    private List<TeacherGroup> teacherGroups = new ArrayList<>();
+
 //    @ManyToMany(mappedBy = "teachers", cascade = {CascadeType.DETACH,
 //            CascadeType.MERGE,
 //            CascadeType.REFRESH,
@@ -63,6 +66,26 @@ public class Teacher implements UserDetails {
             }
     )
     private List<Group> groups = new ArrayList<>();
+
+
+
+    @ManyToMany( cascade =
+            {
+                    CascadeType.DETACH,
+                    CascadeType.MERGE,
+                    CascadeType.REFRESH,
+                    CascadeType.PERSIST
+            })
+
+    @JoinTable(name = "teacher_subject",
+            joinColumns = {
+                    @JoinColumn(name = "teacher_id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "subject_id")
+            }
+    )
+    private List<Subject> subjects = new ArrayList<>();
 
     public void addTeacherFileToTeacher(TeacherFile teacherFile) {
         teacherFile.setTeacher(this);
