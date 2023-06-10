@@ -2,12 +2,11 @@ package com.bntu.diplom.teacherTask.services;
 
 
 
-import com.bntu.diplom.teacherTask.models.Group;
-import com.bntu.diplom.teacherTask.models.Student;
-import com.bntu.diplom.teacherTask.models.Subject;
-import com.bntu.diplom.teacherTask.models.Teacher;
+import com.bntu.diplom.teacherTask.models.*;
 import com.bntu.diplom.teacherTask.repositories.GroupRepository;
+import com.bntu.diplom.teacherTask.repositories.GroupStudentTeacherRepository;
 import com.bntu.diplom.teacherTask.repositories.StudentRepository;
+import com.bntu.diplom.teacherTask.repositories.TeacherRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -21,6 +20,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -28,10 +28,16 @@ import java.util.List;
 public class StudentService {
     private final StudentRepository studentRepository;
     private final GroupRepository groupRepository;
+    private final TeacherRepository teacherRepository;
+    private final GroupStudentTeacherRepository groupStudentTeacherRepository;
 
-    public List<Student> parseListStudent(byte[] data, long groupId) throws IOException {
-        Group group = groupRepository.findById(groupId).get();
-        List<Student> students = new ArrayList<>();
+    public List<GroupStudentTeacher> parseListStudent(byte[] data, Group group, long teacherId) throws IOException {
+        List<GroupStudentTeacher> groupStudentTeachers = group
+                .getGroupStudentTeachers();
+        Teacher teacher = teacherRepository.findById(teacherId).get();
+//        Group group = groupRepository.findById(groupId).get();
+        List<GroupStudentTeacher> unionList = new ArrayList<>();
+//        List<Student> students = new ArrayList<>();
         try {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
             Workbook workbook = new XSSFWorkbook(byteArrayInputStream);
@@ -67,30 +73,58 @@ public class StudentService {
                             parentFullName = currentRow.getCell(4).getStringCellValue();
                             parentEmail = currentRow.getCell(5).getStringCellValue();
                             parentPhone = currentRow.getCell(6).getStringCellValue();
-
-                            students.add(new Student(
-                                    ordinalNumber,
-                                    name, surname,
-                                    patronymic, email,
-                                    phone, parentFullName,
-                                    parentEmail, parentPhone, group));
+//                              TODO: переделать добавление студентов в группу
+                            Student student = new Student(
+                                    ordinalNumber, name, surname,
+                                    patronymic, email, phone, parentFullName,
+                                    parentEmail, parentPhone);
+                            GroupStudentTeacher groupStudentTeacher = new GroupStudentTeacher(teacher, student, group);
+//                            groupStudentTeacher.setStudent(student);
+//                            groupStudentTeacher.setTeacher(teacher);
+//                            groupStudentTeacher.setGroup(group);
+                            unionList.add(groupStudentTeacher);
+//////////////////////////////////////
+//                            teacher.addUnion(groupStudentTeacher);
+//                            group.addUnion(groupStudentTeacher);
+//                            student.addUnion(groupStudentTeacher);
+/////////////////////////////////////
+//                            List<GroupStudentTeacher> groupStudentTeachers1 = teacher.getGroupStudentTeachers();
+//                            groupStudentTeachers1.add(groupStudentTeacher);
+//                            List<GroupStudentTeacher> groupStudentTeachers2 = group.getGroupStudentTeachers();
+//                            groupStudentTeachers2.add(groupStudentTeacher);
+//                            List<GroupStudentTeacher> groupStudentTeachers3 = student.getGroupStudentTeachers();
+//                            groupStudentTeachers3.add(groupStudentTeacher);
+//////////////////////////////////////
+//                            teacherRepository.save(teacher);
+//                            groupRepository.save(group);
+//                            studentRepository.save(student);
+//////////////////////////////////////
+//                            students.add(new Student(
+//                                    ordinalNumber,
+//                                    name, surname,
+//                                    patronymic, email,
+//                                    phone, parentFullName,
+//                                    parentEmail, parentPhone));
                         }
                     }
                 }
             }
+//        studentOfGroup.addAll(students);
         } catch (IOException e) {
 //            return new ArrayList<>();
         } catch (IllegalArgumentException e) {
 //            return new ArrayList<>();
         }
-        return students;
+        return unionList;
     }
 
-    public void saveGroup(long groupId, byte[] bytes) throws IOException {
-        List<Student> students = parseListStudent(bytes, groupId);
-        groupRepository.findById(groupId).get().setStudents(students);
-        log.info("Saving list student for group {}", groupRepository.findById(groupId).get().getName());
-        studentRepository.saveAll(students);
+    public void saveGroup(Group group, long teacherId, byte[] bytes) throws IOException {
+        List<GroupStudentTeacher> unionList = parseListStudent(bytes, group, teacherId);
+        groupStudentTeacherRepository.saveAll(unionList);
+//        groupRepository.findById(groupId).get().setStudents(students);
+//        log.info("Saving list student for group {}", groupRepository.findById(groupId).get().getName());
+//        groupRepository.save(groupRepository.findById(groupId).get());
+//        studentRepository.saveAll(students);
     }
 
 

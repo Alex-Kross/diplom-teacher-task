@@ -2,14 +2,10 @@ package com.bntu.diplom.teacherTask.models;
 
 import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,6 +18,7 @@ public class Student {
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
     )
+    @Column(name="student_id")
     private Long id;
     private Long ordinalNumber;
     private String name;
@@ -37,8 +34,7 @@ public class Student {
             Long ordinalNumber, String name,
             String surname, String patronymic,
             String email, String phone, String parentFullName,
-            String parentEmail, String parentPhone, Group group) {
-
+            String parentEmail, String parentPhone) {
         this.ordinalNumber = ordinalNumber;
         this.name = name;
         this.surname = surname;
@@ -48,7 +44,6 @@ public class Student {
         this.parentFullName = parentFullName;
         this.parentEmail = parentEmail;
         this.parentPhone = parentPhone;
-        this.group = group;
     }
 
     //    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
@@ -61,6 +56,32 @@ public class Student {
 //                    name = "student_group_fk"
 //            )
 //    )
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private Group group;
+//    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+//    private Group group;
+
+
+//    @ManyToMany( cascade =
+//            {
+//                    CascadeType.DETACH,
+//                    CascadeType.MERGE,
+//                    CascadeType.REFRESH,
+//                    CascadeType.PERSIST
+//            })
+//    @JoinTable(name = "student_student_group",
+//            joinColumns = {
+//                    @JoinColumn(name = "student_id")
+//            },
+//            inverseJoinColumns = {
+//                    @JoinColumn(name = "group_id")
+//            }
+//    )
+//    private List<Group> groups = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "student")
+    private List<GroupStudentTeacher> groupStudentTeachers = new ArrayList<>();
+
+    public void addUnion(GroupStudentTeacher groupStudentTeacher) {
+        groupStudentTeacher.setStudent(this);
+        groupStudentTeachers.add(groupStudentTeacher);
+    }
 }

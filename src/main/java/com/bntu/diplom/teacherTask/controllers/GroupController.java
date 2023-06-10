@@ -1,6 +1,9 @@
 package com.bntu.diplom.teacherTask.controllers;
 
 import com.bntu.diplom.teacherTask.models.Group;
+import com.bntu.diplom.teacherTask.models.GroupStudentTeacher;
+import com.bntu.diplom.teacherTask.models.Student;
+import com.bntu.diplom.teacherTask.models.Teacher;
 import com.bntu.diplom.teacherTask.services.GroupService;
 import lombok.AllArgsConstructor;
 import org.hibernate.annotations.Parameter;
@@ -13,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -46,16 +50,26 @@ public class GroupController {
 //  here group yet certain teacher because request groups show only certain list groups
 //    TODO:нужно сделать связь один к одному для группы и студента и реализовать тут загрузку студентов в таблицы
     @GetMapping("/group/{id}")
-    public String groupInfo(@PathVariable Long id, Model model) {
+    public String groupInfo(@PathVariable Long id, Model model, Principal principal) {
         model.addAttribute("group", groupService.getGroupById(id));
-        model.addAttribute("students", groupService.getGroupById(id).getStudents());
+        List<GroupStudentTeacher> groupStudentTeachers = groupService.getGroupById(id).getGroupStudentTeachers();
+        List<Student> students = new ArrayList<>();
+        for (GroupStudentTeacher groupStudentTeacher: groupStudentTeachers) {
+            if (groupStudentTeacher.getTeacher().getId() ==
+                    groupService.getTeacherByPrincipal(principal).getId()) {
+                students.add(groupStudentTeacher.getStudent());
+            }
+        }
+        model.addAttribute("students", students);
         return "groups-info";
     }
 
     @GetMapping("/group/create-page")
-    public String groupCreatePage(Model model){//, @ModelAttribute("group") Group group) {
-        List<Group> allGroup = groupService.getAllGroup();
+    public String groupCreatePage(Model model, Principal principal){//, @ModelAttribute("group") Group group) {
+//        List<Group> allGroup = groupService.getAllGroup();
+        Teacher teacher = groupService.getTeacherByPrincipal(principal);
         model.addAttribute("groups", groupService.getAllGroup());
+        model.addAttribute("files", teacher.getTeacherFiles());
 //        model.addAttribute("students", groupService.getGroupById(id).getStudents());
         return "group-edit";
     }
@@ -65,6 +79,10 @@ public class GroupController {
 //    public String createGroup(StudentGroup studentGroup) {
 //        studentGroupService.saveGroup(studentGroup);
         Long idGroup = Long.parseLong(request.getParameter("select-group"));
+        //TODO: нужно добавить в логику сохранения группы ФАЙЛ и подправить потом логику
+        //TODO: в классе TeacherFileService
+
+        Long idFile = Long.parseLong(request.getParameter("select-file"));
 
         groupService.saveGroup(idGroup, principal, group, listStudentFile);
 

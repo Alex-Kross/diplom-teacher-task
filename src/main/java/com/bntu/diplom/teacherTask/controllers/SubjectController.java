@@ -14,11 +14,11 @@ import java.security.Principal;
 public class SubjectController {
     private final SubjectService subjectService;
 
-    @PostMapping("/group/{id}/subject/create")
-    public String createSubject(Subject subject, Principal principal) throws IOException {
-//    public String createGroup(StudentGroup studentGroup) {
-//        studentGroupService.saveGroup(studentGroup);
-        subjectService.saveSubject(principal, subject);
-        return "groups-info";
-    }
+//    @PostMapping("/group/{id}/subject/create")
+//    public String createSubject(Subject subject, Principal principal) throws IOException {
+////    public String createGroup(StudentGroup studentGroup) {
+////        studentGroupService.saveGroup(studentGroup);
+//        subjectService.saveSubject(principal, subject);
+//        return "groups-info";
+//    }
 }

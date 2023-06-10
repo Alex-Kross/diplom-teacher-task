@@ -1,9 +1,12 @@
 package com.bntu.diplom.teacherTask.services;
 
 import com.bntu.diplom.teacherTask.models.Group;
+import com.bntu.diplom.teacherTask.models.GroupStudentTeacher;
 import com.bntu.diplom.teacherTask.models.Teacher;
 import com.bntu.diplom.teacherTask.models.TeacherFile;
 import com.bntu.diplom.teacherTask.repositories.GroupRepository;
+import com.bntu.diplom.teacherTask.repositories.GroupStudentTeacherRepository;
+import com.bntu.diplom.teacherTask.repositories.StudentRepository;
 import com.bntu.diplom.teacherTask.repositories.TeacherRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +25,9 @@ import java.util.Optional;
 public class GroupService {
     private final GroupRepository groupRepository;
     private final TeacherRepository teacherRepository;
+    private final StudentRepository studentRepository;
     private final StudentService studentService;
+    private final GroupStudentTeacherRepository groupStudentTeacherRepository;
 
 
 //    public List<Group> listGroup(String name) {
@@ -52,33 +57,45 @@ public class GroupService {
 //    }
 
 //    public void saveGroup(StudentGroup studentGroup) {
-    public void saveGroup(Long idGroup, Principal principal, Group group, MultipartFile listStudentFile) throws IOException {
-        // create file object
-        TeacherFile teacherFile = new TeacherFile();
-        teacherFile.setFileName(listStudentFile.getOriginalFilename());
-        teacherFile.setContentType(listStudentFile.getContentType());
-        teacherFile.setSize(listStudentFile.getSize());
-        teacherFile.setBytes(listStudentFile.getBytes());
+    public void saveGroup(Long idGroup, Principal principal, Group group, MultipartFile listStudentFile)
+            throws IOException, RuntimeException {
         // file object add to teacher principal
         Teacher teacher = getTeacherByPrincipal(principal);
-        if (listStudentFile.getSize() != 0) {
-
-            teacher.addTeacherFileToTeacher(teacherFile);
-        }
 
         if (idGroup == 0) {
+            // create file object
+            TeacherFile teacherFile = new TeacherFile();
+            teacherFile.setFileName(listStudentFile.getOriginalFilename());
+            teacherFile.setContentType(listStudentFile.getContentType());
+            teacherFile.setSize(listStudentFile.getSize());
+            teacherFile.setBytes(listStudentFile.getBytes());
+            if (listStudentFile.getSize() != 0) {
+                teacher.addTeacherFileToTeacher(teacherFile);
+            }
             List<Teacher> teachers = group.getTeachers();
             teachers.add(teacher);
 
             log.info("Saving new {} save teacher {}", group, getTeacherByPrincipal(principal));
             groupRepository.save(group);
-            studentService.saveGroup(group.getId(), listStudentFile.getBytes());
+            studentService.saveGroup(group, teacher.getId(), listStudentFile.getBytes());
         } else {
             Group foundGroup = groupRepository.findById(idGroup).get();
+            if (teacher.getGroups().contains(foundGroup)) {
+                throw new RuntimeException("Такая группа у вас уже есть");
+            }
+            TeacherFile teacherFile = new TeacherFile();
+            teacherFile.setFileName(listStudentFile.getOriginalFilename());
+            teacherFile.setContentType(listStudentFile.getContentType());
+            teacherFile.setSize(listStudentFile.getSize());
+            teacherFile.setBytes(listStudentFile.getBytes());
+            if (listStudentFile.getSize() != 0) {
+                teacher.addTeacherFileToTeacher(teacherFile);
+            }
+
             List<Teacher> teachers = foundGroup.getTeachers();
             teachers.add(teacher);
             log.info("Saving new {} save teacher {}", foundGroup, getTeacherByPrincipal(principal));
-            studentService.saveGroup(foundGroup.getId(), listStudentFile.getBytes());
+            studentService.saveGroup(foundGroup, teacher.getId(), listStudentFile.getBytes());
         }
     }
 
@@ -97,6 +114,23 @@ public class GroupService {
         Group group = groupRepository.findById(id).get();
         List<Teacher> teachers = group.getTeachers();
         // if group has only one teacher
+        List<GroupStudentTeacher> groupStudentTeachers = group.getGroupStudentTeachers();
+        List<Long> listIndexForRemove = new ArrayList<>();
+        List<Long> listIndexForRemove2 = new ArrayList<>();
+        for (GroupStudentTeacher groupStudentTeacher: groupStudentTeachers) {
+            if (groupStudentTeacher.getTeacher().getId() ==
+                    getTeacherByPrincipal(principal).getId()) {
+                listIndexForRemove.add(groupStudentTeacher.getId());
+                listIndexForRemove2.add(groupStudentTeacher.getStudent().getId());
+            }
+        }
+        groupStudentTeachers.removeIf(x -> x.getTeacher().getId() == getTeacherByPrincipal(principal).getId());
+        for (Long idForRemove : listIndexForRemove) {
+            groupStudentTeacherRepository.deleteById(idForRemove);
+        }
+        for (Long idForRemove : listIndexForRemove2) {
+            studentRepository.deleteById(idForRemove);
+        }
         if (teachers.size() < 2) {
             groupRepository.deleteById(id);
             // else if group has more one teacher

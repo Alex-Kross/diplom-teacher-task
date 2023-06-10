@@ -29,8 +29,8 @@ public class Group {
 //    private String subject;
 
 //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teacher")
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")
-    private List<Student> students = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")
+//    private List<Student> students = new ArrayList<>();
 
 //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group_id")
 //    private List<TeacherGroup> teacherGroups = new ArrayList<>();
@@ -51,4 +51,29 @@ public class Group {
             }
     )
     private List<Teacher> teachers = new ArrayList<>();
+
+//    @ManyToMany( cascade =
+//            {
+//                    CascadeType.DETACH,
+//                    CascadeType.MERGE,
+//                    CascadeType.REFRESH,
+//                    CascadeType.PERSIST
+//            })
+//    @JoinTable(name = "student_student_group",
+//            joinColumns = {
+//                    @JoinColumn(name = "group_id")
+//            },
+//            inverseJoinColumns = {
+//                    @JoinColumn(name = "student_id")
+//            }
+//    )
+//    private List<Student> students = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")
+    private List<GroupStudentTeacher> groupStudentTeachers = new ArrayList<>();
+
+    public void addUnion(GroupStudentTeacher groupStudentTeacher) {
+        groupStudentTeacher.setGroup(this);
+        groupStudentTeachers.add(groupStudentTeacher);
+    }
 }

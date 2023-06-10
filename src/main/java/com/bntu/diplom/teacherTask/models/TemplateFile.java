@@ -18,29 +18,29 @@ import javax.persistence.PrePersist;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@NoArgsConstructor
-@Entity
+//@Getter
+//@Setter
+//@EqualsAndHashCode
+//@NoArgsConstructor
+//@Entity
 public class TemplateFile {
-    @Id
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY
-    )
-    private Long id;
-    private String fileName;
-    private Long size;
-    private String contentType;
-    @Lob
-    private byte[] file;
+//    @Id
+//    @GeneratedValue(
+//            strategy = GenerationType.IDENTITY
+//    )
+//    private Long id;
+//    private String fileName;
+//    private Long size;
+//    private String contentType;
+//    @Lob
+//    private byte[] file;
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "templateFile")
-    private List<Teacher> teachers = new ArrayList<>();
-
-    @PrePersist
-    private void init(){
-//        MinIOService minIOService = new MinIOService();
-//        minIOService.
-    }
+//    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "templateFile")
+//    private List<Teacher> teachers = new ArrayList<>();
+//
+//    @PrePersist
+//    private void init(){
+////        MinIOService minIOService = new MinIOService();
+////        minIOService.
+//    }
 }

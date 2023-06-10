@@ -28,7 +28,7 @@
     <input type="hidden" name="_csrf" value="${_csrf.token}">
     <input type="submit" value="Создать предмет"/>
 </form>
-<#--<#if !students.isEmpty()>-->
+<#if students?size != 0>
 <table>
     <tr class="tableHeader">
         <td>Фамилия имя отчество</td>
@@ -56,8 +56,16 @@
     </#list>
 <#--    </#foreach>-->
 </table>
-<#--<#else>-->
-<#--    <h3>Список студентов не добавлен</h3>-->
-<#--</#if>-->
+<#else>
+    <h3>Список студентов не добавлен</h3>
+    <br>
+    <form action="/group/${group.id}/file/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="listStudentFile" value="Выбрать файл списка студентов"/>
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <input type="submit" value="Добавить список"/>
+    </form>
+
+
+</#if>
 </body>
 </html>

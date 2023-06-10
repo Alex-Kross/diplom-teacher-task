@@ -36,12 +36,32 @@ public class Teacher implements UserDetails {
     private Boolean active;
     @Enumerated(EnumType.STRING)
     private Role userRole;
-
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private TemplateFile templateFile;
+// relation with template file
+//    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+//    private TemplateFile templateFile;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teacher")
     private List<TeacherFile> teacherFiles = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teacher")
+//    @OneToMany( cascade =
+//            {
+//                    CascadeType.DETACH,
+//                    CascadeType.MERGE,
+//                    CascadeType.REFRESH,
+//                    CascadeType.PERSIST
+//            })
+//    @JoinTable(name = "teacher_student_group",
+//            joinColumns = {
+//                    @JoinColumn(name = "teacher_id")
+//            },
+//            inverseJoinColumns = {
+//                    @JoinColumn(name = "group_id")
+//            }
+//    )
+    private List<GroupStudentTeacher> groupStudentTeachers = new ArrayList<>();
+
+
 
 //    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teacher_id")
 //    private List<TeacherGroup> teacherGroups = new ArrayList<>();
@@ -68,28 +88,34 @@ public class Teacher implements UserDetails {
     private List<Group> groups = new ArrayList<>();
 
 
+//    subject relation
 
-    @ManyToMany( cascade =
-            {
-                    CascadeType.DETACH,
-                    CascadeType.MERGE,
-                    CascadeType.REFRESH,
-                    CascadeType.PERSIST
-            })
-
-    @JoinTable(name = "teacher_subject",
-            joinColumns = {
-                    @JoinColumn(name = "teacher_id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "subject_id")
-            }
-    )
-    private List<Subject> subjects = new ArrayList<>();
+//    @ManyToMany( cascade =
+//            {
+//                    CascadeType.DETACH,
+//                    CascadeType.MERGE,
+//                    CascadeType.REFRESH,
+//                    CascadeType.PERSIST
+//            })
+//
+//    @JoinTable(name = "teacher_subject",
+//            joinColumns = {
+//                    @JoinColumn(name = "teacher_id")
+//            },
+//            inverseJoinColumns = {
+//                    @JoinColumn(name = "subject_id")
+//            }
+//    )
+//    private List<Subject> subjects = new ArrayList<>();
 
     public void addTeacherFileToTeacher(TeacherFile teacherFile) {
         teacherFile.setTeacher(this);
         teacherFiles.add(teacherFile);
+    }
+
+    public void addUnion(GroupStudentTeacher groupStudentTeacher) {
+        groupStudentTeacher.setTeacher(this);
+        groupStudentTeachers.add(groupStudentTeacher);
     }
 
     @Override

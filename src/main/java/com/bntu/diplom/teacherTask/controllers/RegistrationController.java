@@ -8,8 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.imageio.spi.RegisterableService;
-
 @Controller
 @RequiredArgsConstructor
 public class RegistrationController {
@@ -40,6 +38,6 @@ public class RegistrationController {
 
     @GetMapping("/hello")
     public String securityUrl() {
-        return "hello";
+        return "error";
     }
 }

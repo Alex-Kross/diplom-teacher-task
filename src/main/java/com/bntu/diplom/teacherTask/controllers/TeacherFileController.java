@@ -26,7 +26,7 @@ public class TeacherFileController {
 
     @PostMapping("/file/upload")
     private String uploadFile(Teacher teacher, @RequestParam("file") MultipartFile file) throws IOException {
-        teacherFileService.loadFile(teacher, file);
+//        teacherFileService.loadFile(teacher, file);
         return "distribution-task";
     }
 

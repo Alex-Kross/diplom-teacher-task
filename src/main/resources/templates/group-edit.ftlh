@@ -77,11 +77,25 @@
                         </div>
                         </div>
                     <div class="col-md-8 mb-6 pb-4">
+                        <div class="form-outline">
+                            <div>
+                                <select name="select-file" class="form-control border-0 mb-1  rounded shadow" id="group-edit">
+                                    <#--                                        required="required" id="group-edit">-->
+                                    <option value="0" label="--- Выбрать ---" />
+                                    <#list files as file>
+                                        <option value="${file.id}" label="${file.fileName}"></option>
+                                    </#list>
+                                </select>
+                                <h5><label class="form-label" for="form3Examplev2" >Список файлов преподавателя</label></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 mb-6 pb-4">
                         <form>
                             <div class="form-outline">
                                 <div class="custom-file">
                                     <input type="file" name="listStudentFile" id="form3Examplev5" class="form-control form-control-lg"/>
-                                    <h5><label class="form-label" for="form3Examplev4">Загрузить список студентов</label></h5>
+                                    <h5><label class="form-label" for="form3Examplev4">Загрузить новый список студентов</label></h5>
                                 </div>
                             </div>
                         </form>
