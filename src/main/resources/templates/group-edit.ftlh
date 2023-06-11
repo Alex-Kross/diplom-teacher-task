@@ -49,14 +49,15 @@
                             </div>
                         </div>
                     </div>
-                        <div class="col-md-8 mb-6 pb-4">
-                            <div class="form-outline">
-                                <a class="btn btn-primary rounded-pill mb-3" style="text-align: center; width: 25%"
-                                   data-toggle="collapse" href="#collapseExample" role="button"
-                                   aria-expanded="true" aria-controls="collapseExample"> Добавить новую группу</a>
-                            </div>
+                    <div class="col-md-8 mb-6 pb-4">
+                        <div class="form-outline">
+<#--                            <button class="btn btn-primary rounded-pill px-3 " type="submit">Добавить</button>-->
+                            <a class="btn btn-primary rounded-pill mb-3"
+                               data-toggle="collapse" href="#collapseExample" role="button"
+                               aria-expanded="true" aria-controls="collapseExample"> Добавить новую группу</a>
                         </div>
-                        <div class="collapse mb-3" id="collapseExample" style="">
+                    </div>
+                    <div class="collapse" id="collapseExample" style="">
                         <div class="col-md-8 mb-6 pb-4">
                             <div class="form-outline">
                                 <input type="text" name="name" id="form3Examplev2" class="form-control form-control-lg" />
@@ -75,7 +76,7 @@
                                 <h5><label class="form-label" for="form3Examplev4">Название университета</label></h5>
                             </div>
                         </div>
-                        </div>
+                    </div>
                     <div class="col-md-8 mb-6 pb-4">
                         <div class="form-outline">
                             <div>
@@ -86,8 +87,14 @@
                                         <option value="${file.id}" label="${file.fileName}"></option>
                                     </#list>
                                 </select>
-                                <h5><label class="form-label" for="form3Examplev2" >Список файлов преподавателя</label></h5>
+                                <h5><label class="form-label" for="group-edit" >Список уже загружженых файлов</label></h5>
                             </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 mb-6 pb-4">
+                        <div class="form-outline">
+                            <a class="btn btn-primary rounded-pill mb-3" role="button"
+                               href="/download/files/1"  download="" title="Скачать файл">Скачать шаблон со списком студентов</a>
                         </div>
                     </div>
                     <div class="col-md-8 mb-6 pb-4">
@@ -95,19 +102,23 @@
                             <div class="form-outline">
                                 <div class="custom-file">
                                     <input type="file" name="listStudentFile" id="form3Examplev5" class="form-control form-control-lg"/>
-                                    <h5><label class="form-label" for="form3Examplev4">Загрузить новый список студентов</label></h5>
+                                    <h5><label class="form-label" for="form3Examplev5">Загрузить новый список студентов</label></h5>
                                 </div>
                             </div>
                         </form>
                     </div>
-                </div>
-                <input type="hidden" name="_csrf" value="${_csrf.token}">
-                <button class="btn btn-primary rounded-pill px-3 " type="submit">Добавить</button>
+                    <div class="col-md-8 mb-6 pb-4">
+                        <div class="form-outline">
+                            <input type="hidden" name="_csrf" value="${_csrf.token}">
+                            <button class="btn btn-primary rounded-pill px-3 " type="submit">Добавить</button>
 
-                <form action="/" method="get" style="margin: 0px" class="btn  rounded-pill px-3">
-                    <input type="hidden" name="_csrf" value="${_csrf.token}">
-                    <button class="btn btn-primary rounded-pill px-4" type="submit">Отмена</button>
-                </form>
+                            <form action="/" method="get" style="margin: 0px" class="btn  rounded-pill px-3">
+                                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                <button class="btn btn-primary rounded-pill px-4" type="submit">Отмена</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </section>

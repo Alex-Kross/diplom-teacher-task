@@ -4,10 +4,7 @@ import com.bntu.diplom.teacherTask.models.Group;
 import com.bntu.diplom.teacherTask.models.GroupStudentTeacher;
 import com.bntu.diplom.teacherTask.models.Teacher;
 import com.bntu.diplom.teacherTask.models.TeacherFile;
-import com.bntu.diplom.teacherTask.repositories.GroupRepository;
-import com.bntu.diplom.teacherTask.repositories.GroupStudentTeacherRepository;
-import com.bntu.diplom.teacherTask.repositories.StudentRepository;
-import com.bntu.diplom.teacherTask.repositories.TeacherRepository;
+import com.bntu.diplom.teacherTask.repositories.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +24,7 @@ public class GroupService {
     private final TeacherRepository teacherRepository;
     private final StudentRepository studentRepository;
     private final StudentService studentService;
+    private final TeacherFileRepository teacherFileRepository;
     private final GroupStudentTeacherRepository groupStudentTeacherRepository;
 
 
@@ -57,45 +55,74 @@ public class GroupService {
 //    }
 
 //    public void saveGroup(StudentGroup studentGroup) {
-    public void saveGroup(Long idGroup, Principal principal, Group group, MultipartFile listStudentFile)
+    public void saveGroup(Long idFile, Long idGroup, Principal principal, Group group, MultipartFile listStudentFile)
             throws IOException, RuntimeException {
         // file object add to teacher principal
-        Teacher teacher = getTeacherByPrincipal(principal);
 
+        Teacher teacher = getTeacherByPrincipal(principal);
+//        if create new group
         if (idGroup == 0) {
-            // create file object
-            TeacherFile teacherFile = new TeacherFile();
-            teacherFile.setFileName(listStudentFile.getOriginalFilename());
-            teacherFile.setContentType(listStudentFile.getContentType());
-            teacherFile.setSize(listStudentFile.getSize());
-            teacherFile.setBytes(listStudentFile.getBytes());
-            if (listStudentFile.getSize() != 0) {
-                teacher.addTeacherFileToTeacher(teacherFile);
+            //if user doesn't fill all fields
+            if (group.getName().equals("")
+                    || group.getFacultyName().equals("")
+                    || group.getUniversityName().equals("")) {
+                throw new RuntimeException("Заполните все поля");
+            }
+            //  if create new file
+            if (idFile == 0) {
+                TeacherFile teacherFile = new TeacherFile();
+                teacherFile.setFileName(listStudentFile.getOriginalFilename());
+                teacherFile.setContentType(listStudentFile.getContentType());
+                teacherFile.setSize(listStudentFile.getSize());
+                teacherFile.setBytes(listStudentFile.getBytes());
+                if (listStudentFile.getSize() != 0) {
+                    teacher.addTeacherFileToTeacher(teacherFile);
+                }
             }
             List<Teacher> teachers = group.getTeachers();
             teachers.add(teacher);
 
             log.info("Saving new {} save teacher {}", group, getTeacherByPrincipal(principal));
-            groupRepository.save(group);
-            studentService.saveGroup(group, teacher.getId(), listStudentFile.getBytes());
+            if (listStudentFile.getBytes().length == 0) {
+                groupRepository.save(group);
+
+            }
+            if (idFile != 0) {
+                //  if add exist file
+                studentService.saveGroup(group, teacher.getId(),
+                        teacherFileRepository.findById(idFile).get().getBytes());
+            } else {
+                //  if create new file
+                studentService.saveGroup(group, teacher.getId(), listStudentFile.getBytes());
+            }
         } else {
+//            if add list student in exist group
             Group foundGroup = groupRepository.findById(idGroup).get();
             if (teacher.getGroups().contains(foundGroup)) {
                 throw new RuntimeException("Такая группа у вас уже есть");
             }
-            TeacherFile teacherFile = new TeacherFile();
-            teacherFile.setFileName(listStudentFile.getOriginalFilename());
-            teacherFile.setContentType(listStudentFile.getContentType());
-            teacherFile.setSize(listStudentFile.getSize());
-            teacherFile.setBytes(listStudentFile.getBytes());
-            if (listStudentFile.getSize() != 0) {
-                teacher.addTeacherFileToTeacher(teacherFile);
+            //  if create new file
+            if (idFile == 0) {
+                TeacherFile teacherFile = new TeacherFile();
+                teacherFile.setFileName(listStudentFile.getOriginalFilename());
+                teacherFile.setContentType(listStudentFile.getContentType());
+                teacherFile.setSize(listStudentFile.getSize());
+                teacherFile.setBytes(listStudentFile.getBytes());
+                if (listStudentFile.getSize() != 0) {
+                    teacher.addTeacherFileToTeacher(teacherFile);
+                }
             }
-
             List<Teacher> teachers = foundGroup.getTeachers();
             teachers.add(teacher);
             log.info("Saving new {} save teacher {}", foundGroup, getTeacherByPrincipal(principal));
-            studentService.saveGroup(foundGroup, teacher.getId(), listStudentFile.getBytes());
+            if (idFile != 0) {
+                //  if add exist file
+                studentService.saveGroup(foundGroup, teacher.getId(),
+                        teacherFileRepository.findById(idFile).get().getBytes());
+            } else {
+                //  if create new file
+                studentService.saveGroup(foundGroup, teacher.getId(), listStudentFile.getBytes());
+            }
         }
     }
 

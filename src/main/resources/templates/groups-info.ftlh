@@ -60,6 +60,16 @@
     <h3>Список студентов не добавлен</h3>
     <br>
     <form action="/group/${group.id}/file/upload" method="post" enctype="multipart/form-data">
+        <a href="/download/files/1"  download="" title="всплывающая подсказка">скачать файл шаблон списка студентов</a>
+        <select name="select-file" class="form-control border-0 mb-1  rounded shadow" id="group-edit">
+            <#--                                        required="required" id="group-edit">-->
+            <option value="0" label="--- Выбрать ---" />
+            <#list files as file>
+                <option value="${file.id}" label="${file.fileName}"></option>
+            </#list>
+        </select>
+        <h5><label class="form-label" for="group-edit" >Список файлов преподавателя</label></h5>
+
         <input type="file" name="listStudentFile" value="Выбрать файл списка студентов"/>
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <input type="submit" value="Добавить список"/>

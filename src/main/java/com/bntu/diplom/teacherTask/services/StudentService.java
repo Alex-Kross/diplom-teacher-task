@@ -9,6 +9,7 @@ import com.bntu.diplom.teacherTask.repositories.StudentRepository;
 import com.bntu.diplom.teacherTask.repositories.TeacherRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ooxml.POIXMLException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -111,9 +113,18 @@ public class StudentService {
             }
 //        studentOfGroup.addAll(students);
         } catch (IOException e) {
+            throw new IOException("Файл не соответствует шаблону");
 //            return new ArrayList<>();
         } catch (IllegalArgumentException e) {
-//            return new ArrayList<>();
+            //тут появляется ошибка когда при создании группы не добавляют файл
+//            throw new IllegalArgumentException("Файл не соответствует шаблону");
+        } catch (POIXMLException e){
+            throw new POIXMLException("Файл не соответствует шаблону");
+        } catch (Exception e){
+            throw new RuntimeException("Файл не соответствует шаблону");
+        }
+        if (unionList.size() == 0 && data.length != 0) {
+            throw new RuntimeException("Файл не соответствует шаблону");
         }
         return unionList;
     }

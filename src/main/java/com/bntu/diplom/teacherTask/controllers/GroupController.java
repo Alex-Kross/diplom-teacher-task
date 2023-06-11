@@ -61,6 +61,8 @@ public class GroupController {
             }
         }
         model.addAttribute("students", students);
+        model.addAttribute("files", groupService.
+                getTeacherByPrincipal(principal).getTeacherFiles());
         return "groups-info";
     }
 
@@ -84,7 +86,7 @@ public class GroupController {
 
         Long idFile = Long.parseLong(request.getParameter("select-file"));
 
-        groupService.saveGroup(idGroup, principal, group, listStudentFile);
+        groupService.saveGroup(idFile, idGroup, principal, group, listStudentFile);
 
         return "redirect:/";
     }

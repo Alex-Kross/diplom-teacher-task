@@ -22,22 +22,27 @@ public class TeacherFileService {
     private final GroupRepository groupRepository;
     private final GroupService groupService;
     private final StudentService studentService;
-    public void loadFile(Long idGroup, Principal principal, MultipartFile listStudentFile) throws IOException {
+    public void loadFile(Long idFile, Long idGroup, Principal principal, MultipartFile listStudentFile) throws IOException {
         Group foundGroup = groupRepository.findById(idGroup).get();
         Teacher teacher = groupService.getTeacherByPrincipal(principal);
-
-        TeacherFile teacherFile = new TeacherFile();
-        teacherFile.setFileName(listStudentFile.getOriginalFilename());
-        teacherFile.setContentType(listStudentFile.getContentType());
-        teacherFile.setSize(listStudentFile.getSize());
-        teacherFile.setBytes(listStudentFile.getBytes());
-        if (listStudentFile.getSize() != 0) {
-            teacher.addTeacherFileToTeacher(teacherFile);
+        if (idFile == 0) {
+            TeacherFile teacherFile = new TeacherFile();
+            teacherFile.setFileName(listStudentFile.getOriginalFilename());
+            teacherFile.setContentType(listStudentFile.getContentType());
+            teacherFile.setSize(listStudentFile.getSize());
+            teacherFile.setBytes(listStudentFile.getBytes());
+            if (listStudentFile.getSize() != 0) {
+                teacher.addTeacherFileToTeacher(teacherFile);
+            }
         }
-
 //        List<Teacher> teachers = foundGroup.getTeachers();
 //        teachers.add(teacher);
         log.info("Saving new {} save teacher {}", foundGroup, groupService.getTeacherByPrincipal(principal));
-        studentService.saveGroup(foundGroup, teacher.getId(), listStudentFile.getBytes());
+        if (idFile != 0) {
+            studentService.saveGroup(foundGroup, teacher.getId(),
+                    teacherFileRepository.findById(idFile).get().getBytes());
+        } else {
+            studentService.saveGroup(foundGroup, teacher.getId(), listStudentFile.getBytes());
+        }
     }
 }

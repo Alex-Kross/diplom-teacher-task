@@ -37,6 +37,10 @@ public class TeacherFile {
 //    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
-
-
+    public TeacherFile(String fileName, Long size, String contentType, byte[] bytes) {
+        this.fileName = fileName;
+        this.size = size;
+        this.contentType = contentType;
+        this.bytes = bytes;
+    }
 }
