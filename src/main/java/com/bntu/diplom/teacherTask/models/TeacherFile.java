@@ -6,14 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,15 +27,20 @@ public class TeacherFile {
     private String contentType;
     @Lob
     private byte[] bytes;
+    @Enumerated(EnumType.STRING)
+    private FileType fileType;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER )
 //    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
-    public TeacherFile(String fileName, Long size, String contentType, byte[] bytes) {
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teacherFile")
+    private List<TeacherGroupTopic> teacherGroupTopics = new ArrayList<>();
+    public TeacherFile(String fileName, Long size, String contentType, byte[] bytes, FileType fileType) {
         this.fileName = fileName;
         this.size = size;
         this.contentType = contentType;
         this.bytes = bytes;
+        this.fileType = fileType;
     }
 }

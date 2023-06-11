@@ -81,10 +81,10 @@ public class FileController {
         return "groups-info";
     }
     @PostMapping("/group/{id}/file/upload")
-    public String addFileToTeacher(@PathVariable Long id, Model model,
-                                   HttpServletRequest request,
-                                   @RequestParam("listStudentFile") MultipartFile listStudentFile,
-                                   Principal principal) throws IOException {
+    public String addStudentListFileToTeacher(@PathVariable Long id, Model model,
+                                              HttpServletRequest request,
+                                              @RequestParam("listStudentFile") MultipartFile listStudentFile,
+                                              Principal principal) throws IOException {
         Long idFile = Long.parseLong(request.getParameter("select-file"));
         teacherFileService.loadFile(idFile, id, principal,listStudentFile);
 //        model.addAttribute("group", groupService.getGroupById(id));

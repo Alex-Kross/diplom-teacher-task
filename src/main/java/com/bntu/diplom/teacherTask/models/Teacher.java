@@ -43,7 +43,7 @@ public class Teacher implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teacher")
     private List<TeacherFile> teacherFiles = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teacher")
+
 //    @OneToMany( cascade =
 //            {
 //                    CascadeType.DETACH,
@@ -59,7 +59,11 @@ public class Teacher implements UserDetails {
 //                    @JoinColumn(name = "group_id")
 //            }
 //    )
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teacher")
     private List<GroupStudentTeacher> groupStudentTeachers = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teacher")
+    private List<TeacherGroupTopic> teacherGroupTopics = new ArrayList<>();
 
 
 

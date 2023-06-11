@@ -96,5 +96,21 @@ public class GroupController {
         groupService.deleteGroup(id, principal);
         return "redirect:/";
     }
+    @PostMapping("/group/{id}/dis")
+    public String openDistribution(@PathVariable Long id, Principal principal, Model model) throws IOException {
+        Teacher teacher = groupService.getTeacherByPrincipal(principal);
+        List<GroupStudentTeacher> groupStudentTeachers = groupService.getGroupById(id).getGroupStudentTeachers();
+        List<Student> students = new ArrayList<>();
+        for (GroupStudentTeacher groupStudentTeacher: groupStudentTeachers) {
+            if (groupStudentTeacher.getTeacher().getId() ==
+                    groupService.getTeacherByPrincipal(principal).getId()) {
+                students.add(groupStudentTeacher.getStudent());
+            }
+        }
+        model.addAttribute("students", students);
+        model.addAttribute("group", groupService.getGroupById(id));
+
+        return "distribution-task";
+    }
 }
 

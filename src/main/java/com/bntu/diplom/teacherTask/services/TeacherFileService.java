@@ -1,5 +1,6 @@
 package com.bntu.diplom.teacherTask.services;
 
+import com.bntu.diplom.teacherTask.models.FileType;
 import com.bntu.diplom.teacherTask.models.Group;
 import com.bntu.diplom.teacherTask.models.Teacher;
 import com.bntu.diplom.teacherTask.models.TeacherFile;
@@ -26,11 +27,11 @@ public class TeacherFileService {
         Group foundGroup = groupRepository.findById(idGroup).get();
         Teacher teacher = groupService.getTeacherByPrincipal(principal);
         if (idFile == 0) {
-            TeacherFile teacherFile = new TeacherFile();
-            teacherFile.setFileName(listStudentFile.getOriginalFilename());
-            teacherFile.setContentType(listStudentFile.getContentType());
-            teacherFile.setSize(listStudentFile.getSize());
-            teacherFile.setBytes(listStudentFile.getBytes());
+            TeacherFile teacherFile = new TeacherFile(listStudentFile.getOriginalFilename(),
+                    listStudentFile.getSize(),
+                    listStudentFile.getContentType(),
+                    listStudentFile.getBytes(),
+                    FileType.STUDENT_LIST);
             if (listStudentFile.getSize() != 0) {
                 teacher.addTeacherFileToTeacher(teacherFile);
             }

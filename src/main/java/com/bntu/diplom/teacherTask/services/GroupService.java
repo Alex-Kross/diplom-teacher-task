@@ -1,9 +1,6 @@
 package com.bntu.diplom.teacherTask.services;
 
-import com.bntu.diplom.teacherTask.models.Group;
-import com.bntu.diplom.teacherTask.models.GroupStudentTeacher;
-import com.bntu.diplom.teacherTask.models.Teacher;
-import com.bntu.diplom.teacherTask.models.TeacherFile;
+import com.bntu.diplom.teacherTask.models.*;
 import com.bntu.diplom.teacherTask.repositories.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,11 +67,11 @@ public class GroupService {
             }
             //  if create new file
             if (idFile == 0) {
-                TeacherFile teacherFile = new TeacherFile();
-                teacherFile.setFileName(listStudentFile.getOriginalFilename());
-                teacherFile.setContentType(listStudentFile.getContentType());
-                teacherFile.setSize(listStudentFile.getSize());
-                teacherFile.setBytes(listStudentFile.getBytes());
+                TeacherFile teacherFile = new TeacherFile(listStudentFile.getOriginalFilename(),
+                        listStudentFile.getSize(),
+                        listStudentFile.getContentType(),
+                        listStudentFile.getBytes(),
+                        FileType.STUDENT_LIST);
                 if (listStudentFile.getSize() != 0) {
                     teacher.addTeacherFileToTeacher(teacherFile);
                 }
@@ -103,11 +100,11 @@ public class GroupService {
             }
             //  if create new file
             if (idFile == 0) {
-                TeacherFile teacherFile = new TeacherFile();
-                teacherFile.setFileName(listStudentFile.getOriginalFilename());
-                teacherFile.setContentType(listStudentFile.getContentType());
-                teacherFile.setSize(listStudentFile.getSize());
-                teacherFile.setBytes(listStudentFile.getBytes());
+                TeacherFile teacherFile = new TeacherFile(listStudentFile.getOriginalFilename(),
+                        listStudentFile.getSize(),
+                        listStudentFile.getContentType(),
+                        listStudentFile.getBytes(),
+                        FileType.STUDENT_LIST);
                 if (listStudentFile.getSize() != 0) {
                     teacher.addTeacherFileToTeacher(teacherFile);
                 }

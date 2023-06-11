@@ -18,6 +18,7 @@ public class GroupStudentTeacher {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
+
     @JoinColumn(name = "teacher_id")
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER )
     private Teacher teacher;

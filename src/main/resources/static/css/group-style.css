@@ -12,7 +12,10 @@
 .bg-indigo {
     background-color: #48cc84fb;
 }
-
+.my-4 {
+    margin-top: 1.5rem!important;
+    margin-bottom: 6rem!important;
+}
 /* .nav-item {
     background-color: #48cc84fb;
 } */

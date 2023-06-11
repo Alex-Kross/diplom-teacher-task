@@ -1,5 +1,6 @@
 package com.bntu.diplom.teacherTask.services;
 
+import com.bntu.diplom.teacherTask.models.FileType;
 import com.bntu.diplom.teacherTask.models.TeacherFile;
 import io.minio.*;
 import io.minio.errors.ErrorResponseException;
@@ -65,7 +66,7 @@ public class MinIOService {
         String nameFile = "Template list of task."+typeFile;
 
         byte[] bytes = object.readAllBytes();
-        return new TeacherFile(nameFile, sizeFile, contentType, bytes);
+        return new TeacherFile(nameFile, sizeFile, contentType, bytes, FileType.TASK_LIST);
     }
 
     public TeacherFile uploadTemplateTopic() throws ServerException, InsufficientDataException,
@@ -86,7 +87,7 @@ public class MinIOService {
         String nameFile = "Template topics."+typeFile;
 
         byte[] bytes = object.readAllBytes();
-        return new TeacherFile(nameFile, sizeFile, contentType, bytes);
+        return new TeacherFile(nameFile, sizeFile, contentType, bytes, FileType.TOPIC_LIST);
     }
 
     public TeacherFile uploadTemplateStudentList() throws ServerException, InsufficientDataException,
@@ -108,7 +109,7 @@ public class MinIOService {
         String nameFile = "Template list students."+typeFile;
 
         byte[] bytes = object.readAllBytes();
-        return new TeacherFile(nameFile, sizeFile, contentType, bytes);
+        return new TeacherFile(nameFile, sizeFile, contentType, bytes, FileType.STUDENT_LIST);
     }
 
 }
