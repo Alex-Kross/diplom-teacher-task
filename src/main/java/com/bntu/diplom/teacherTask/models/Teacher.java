@@ -62,8 +62,7 @@ public class Teacher implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teacher")
     private List<GroupStudentTeacher> groupStudentTeachers = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teacher")
-    private List<TeacherGroupTopic> teacherGroupTopics = new ArrayList<>();
+
 
 
 

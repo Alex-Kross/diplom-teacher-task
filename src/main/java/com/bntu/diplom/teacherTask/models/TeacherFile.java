@@ -34,8 +34,6 @@ public class TeacherFile {
 //    @JoinColumn(name = "teacher_id")
     private Teacher teacher;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "teacherFile")
-    private List<TeacherGroupTopic> teacherGroupTopics = new ArrayList<>();
     public TeacherFile(String fileName, Long size, String contentType, byte[] bytes, FileType fileType) {
         this.fileName = fileName;
         this.size = size;

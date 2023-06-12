@@ -20,9 +20,14 @@ public class Topic {
     @Column(name="topic_id")
     private Long id;
 
-    private String variant;
+    private Long variant;
     private String title;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "topic")
     private List<TeacherGroupTopic> teacherGroupTopics = new ArrayList<>();
+
+    public Topic(Long variant, String title) {
+        this.variant = variant;
+        this.title = title;
+    }
 }

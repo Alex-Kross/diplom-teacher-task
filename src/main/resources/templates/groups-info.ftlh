@@ -20,10 +20,21 @@
     <section class="vh-100 gradient-custom">
         <div class="container ">
             <header class="d-flex  py-3">
-                    <form action="/logout" method="post">
-                        <input type="hidden" name="_csrf" value="${_csrf.token}">
-                        <input  class=" nav-pills nav-item" type="submit" value="Выйти"/>
-                    </form>
+                <#if teacher.email??>
+                <#--                <h3>Имя пользователя: <i>${teacher.name}</i></h3>-->
+                <form action="/logout" method="post">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <input  class=" nav-pills nav-item" type="submit" value="Выйти"/>
+                </form>
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Группы</a></li>
+                </ul>
+                <#else>
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a href="/login" class="nav-link active" aria-current="page"  type="submit">Войти</a></li>
+
+
+                    </#if>
             </header>
         </div>
         <div class="container ">
@@ -35,10 +46,27 @@
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                 <button class="btn btn-primary rounded-pill px-3" type="submit">Удалить группу</button>
             </form>
-            <form action="/group/${group.id}/dis" method="post">
-                <input type="hidden" name="_csrf" value="${_csrf.token}">
-                <button class="btn btn-primary rounded-pill px-3" type="submit">Распределить задания</button>
-            </form>
+                <h3>Добавить список тем </h3>
+                <div class="form-outline">
+                    <a class="btn btn-primary rounded-pill mb-3" role="button"
+                       href="/download/files/2"  download="" title="Скачать файл">Cкачать файл шаблон списка тем</a>
+                </div>
+                <div class="form-outline">
+                    <form action="/group/${group.id}/dis/upload-topic" method="post" enctype="multipart/form-data"
+                          style="margin: 0px" class="btn  rounded-pill px-3">
+                        <#--                                    <input type="file" name="listTopicFile" value="Выбрать список тем"/>-->
+                        <input type="file" name="listTopicFile" id="form3Examplev5" class="form-control form-control-lg"/>
+                        <h5><label class="form-label">Выбрать список тем</label></h5>
+
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                        <#--                                    <input type="submit" value="Добавить файл"/>-->
+                        <button class="btn btn-primary rounded-pill px-4" type="submit">Добавить файл</button>
+                    </form>
+                </div>
+<#--            <form action="/group/${group.id}/dis" method="post">-->
+<#--                <input type="hidden" name="_csrf" value="${_csrf.token}">-->
+<#--                <button class="btn btn-primary rounded-pill px-3" type="submit">Распределить задания</button>-->
+<#--            </form>-->
             </h3>
 
 

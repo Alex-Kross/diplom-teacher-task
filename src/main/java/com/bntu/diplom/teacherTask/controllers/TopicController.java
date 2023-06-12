@@ -34,7 +34,7 @@ public class TopicController {
         return "distribution-task";
     }
 
-    @PostMapping("/dis/upload-student")
+//    @PostMapping("/dis/upload-student")
     public String uploadStudentList(HttpServletRequest request, Principal principal, Model model) throws IOException {
         Teacher teacher = groupService.getTeacherByPrincipal(principal);
         model.addAttribute("groups", teacher.getGroups());
@@ -53,7 +53,7 @@ public class TopicController {
         return "distribution-task";
     }
 
-    @PostMapping("/dis/upload-topic")
+//    @PostMapping("/dis/upload-topic")
     public String uploadTopicList(HttpServletRequest request, Principal principal, Model model) throws IOException {
         Teacher teacher = groupService.getTeacherByPrincipal(principal);
         model.addAttribute("groups", teacher.getGroups());

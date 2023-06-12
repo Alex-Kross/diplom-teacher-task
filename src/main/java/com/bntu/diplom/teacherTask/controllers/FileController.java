@@ -2,7 +2,9 @@ package com.bntu.diplom.teacherTask.controllers;
 
 import com.bntu.diplom.teacherTask.models.Teacher;
 import com.bntu.diplom.teacherTask.models.TeacherFile;
+import com.bntu.diplom.teacherTask.models.TeacherGroupTopic;
 import com.bntu.diplom.teacherTask.repositories.TeacherFileRepository;
+import com.bntu.diplom.teacherTask.repositories.TeacherGroupTopicRepository;
 import com.bntu.diplom.teacherTask.services.GroupService;
 import com.bntu.diplom.teacherTask.services.MinIOService;
 import com.bntu.diplom.teacherTask.services.TeacherFileService;
@@ -23,6 +25,8 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,6 +34,8 @@ public class FileController {
     private final TeacherFileRepository teacherFileRepository;
     private final TeacherFileService teacherFileService;
     private final GroupService groupService;
+
+    private final TeacherGroupTopicRepository teacherGroupTopicRepository;
     private MinIOService minIOService = new MinIOService();
     @GetMapping("/files/{id}")
     private ResponseEntity<?> getFileById(@PathVariable Long id) throws ServerException,
@@ -74,6 +80,23 @@ public class FileController {
                 .body(new InputStreamResource(new ByteArrayInputStream(file.getBytes())));
     }
 
+    @GetMapping("/download/task-list/{id}")
+    private ResponseEntity<?> getTaskListById(@PathVariable Long id) throws ServerException,
+            InsufficientDataException, ErrorResponseException,
+            IOException, NoSuchAlgorithmException, InvalidKeyException,
+            InvalidResponseException, XmlParserException, InternalException {
+        // choose what template download
+//        TeacherFile file = null;
+
+        TeacherGroupTopic file = teacherGroupTopicRepository.findById(id).get();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
+//                .header("fileName", file.getOriginalFileName())
+                .contentType(MediaType.valueOf(file.getContentType()))
+                .contentLength(file.getSize())
+                .body(new InputStreamResource(new ByteArrayInputStream(file.getBytes())));
+    }
     @PostMapping("/group/{id}/upload")
     public String createTeacher(@PathVariable Long id, Model model, @RequestParam("file1") MultipartFile file1, Teacher teacher) throws IOException {
 //        teacherService.saveTeacher(teacher, file1);

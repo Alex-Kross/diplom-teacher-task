@@ -18,24 +18,22 @@ public class TeacherGroupTopic {
             strategy = GenerationType.IDENTITY
     )
     private Long id;
-
-    @JoinColumn(name = "teacher_id")
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER )
-    private Teacher teacher;
+    private String fileName;
+    private Long size;
+    private String contentType;
+    @Lob
+    private byte[] bytes;
+    @Enumerated(EnumType.STRING)
 
     @JoinColumn(name = "topic_id")
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER )
     private Topic topic;
 
-    @JoinColumn(name = "group_id")
+    @JoinColumn(name = "group_student_teacher_id")
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER )
-    private Group group;
+    private GroupStudentTeacher groupStudentTeacher;
 
-    @JoinColumn(name = "teacher_file_id")
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER )
-    private TeacherFile teacherFile;
 
-    @JoinColumn(name = "student_id")
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER )
-    private Student student;
+
+
 }

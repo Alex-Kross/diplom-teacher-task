@@ -19,15 +19,32 @@
 <body>
     <section class="vh-100 gradient-custom">
         <div class="container">
-            <header class="d-flex justify-content-center py-3">
+            <header class="d-flex  py-3">
+            <#if teacher.email??>
+            <#--                <h3>Имя пользователя: <i>${teacher.name}</i></h3>-->
+                <form action="/logout" method="post">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <input  class=" nav-pills nav-item" type="submit" value="Выйти"/>
+                </form>
                 <ul class="nav nav-pills">
-                    <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Группы</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Предметы</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Распределение</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Отправка</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Учёт</a></li>
+                    <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Группы</a></li>
                 </ul>
+            <#else>
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a href="/login" class="nav-link active" aria-current="page"  type="submit">Войти</a></li>
+
+
+            </#if>
             </header>
+<#--            <header class="d-flex justify-content-center py-3">-->
+<#--                <ul class="nav nav-pills">-->
+<#--                    -->
+<#--                    <li class="nav-item"><a href="#" class="nav-link">Предметы</a></li>-->
+<#--                    <li class="nav-item"><a href="#" class="nav-link">Распределение</a></li>-->
+<#--                    <li class="nav-item"><a href="#" class="nav-link">Отправка</a></li>-->
+<#--                    <li class="nav-item"><a href="#" class="nav-link">Учёт</a></li>-->
+<#--                </ul>-->
+<#--            </header>-->
         </div>
         <form action="/group/create" method="post" enctype="multipart/form-data">
             <div class="container">

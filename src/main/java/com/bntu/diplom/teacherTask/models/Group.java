@@ -72,8 +72,7 @@ public class Group {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")
     private List<GroupStudentTeacher> groupStudentTeachers = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group")
-    private List<TeacherGroupTopic> teacherGroupTopics = new ArrayList<>();
+
 
     public void addUnion(GroupStudentTeacher groupStudentTeacher) {
         groupStudentTeacher.setGroup(this);
