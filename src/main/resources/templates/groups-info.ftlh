@@ -46,92 +46,89 @@
                 <input type="hidden" name="_csrf" value="${_csrf.token}">
                 <button class="btn btn-primary rounded-pill px-3" type="submit">Удалить группу</button>
             </form>
-                <h3>Добавить список тем </h3>
-                <div class="form-outline">
-                    <a class="btn btn-primary rounded-pill mb-3" role="button"
-                       href="/download/files/2"  download="" title="Скачать файл">Cкачать файл шаблон списка тем</a>
-                </div>
-                <div class="form-outline">
-                    <form action="/group/${group.id}/dis/upload-topic" method="post" enctype="multipart/form-data"
-                          style="margin: 0px" class="btn  rounded-pill px-3">
+            </h3>
+            <#if students?size != 0>
+                <h3 class="my-5">
+                    <p>Добавить список тем</p>
+                    <div class="form-outline">
+                        <a class="btn btn-primary rounded-pill mb-3" role="button"
+                           href="/download/files/2"  download="" title="Скачать файл">Cкачать файл шаблон списка тем</a>
+                    </div>
+
+                    <form action="/group/${group.id}/dis/upload-topic" method="post" enctype="multipart/form-data">
                         <#--                                    <input type="file" name="listTopicFile" value="Выбрать список тем"/>-->
                         <input type="file" name="listTopicFile" id="form3Examplev5" class="form-control form-control-lg"/>
-                        <h5><label class="form-label">Выбрать список тем</label></h5>
+                        <h5><label class="form-label">Загрузить список тем</label></h5>
 
                         <input type="hidden" name="_csrf" value="${_csrf.token}">
                         <#--                                    <input type="submit" value="Добавить файл"/>-->
-                        <button class="btn btn-primary rounded-pill px-4" type="submit">Добавить файл</button>
+                        <button class="btn btn-primary rounded-pill px-4" type="submit">Добавить список тем</button>
                     </form>
-                </div>
-<#--            <form action="/group/${group.id}/dis" method="post">-->
-<#--                <input type="hidden" name="_csrf" value="${_csrf.token}">-->
-<#--                <button class="btn btn-primary rounded-pill px-3" type="submit">Распределить задания</button>-->
-<#--            </form>-->
-            </h3>
 
+                    <#--            <form action="/group/${group.id}/dis" method="post">-->
+                    <#--                <input type="hidden" name="_csrf" value="${_csrf.token}">-->
+                    <#--                <button class="btn btn-primary rounded-pill px-3" type="submit">Распределить задания</button>-->
+                    <#--            </form>-->
+                </h3>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Фамилия имя отчество</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Телефон</th>
+                        <th scope="col">ФИО родителя</th>
+                        <th scope="col">Email родителя</th>
+                        <th scope="col">Телефон родителя</th>
+                    </tr>
+                    </thead>
 
-
-
-        <#if students?size != 0>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Фамилия имя отчество</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Телефон</th>
-                    <th scope="col">ФИО родителя</th>
-                    <th scope="col">Email родителя</th>
-                    <th scope="col">Телефон родителя</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                <tr>
-                <#list students as student>
-                    <th scope="row">${student.ordinalNumber}</th>
-                    <td>${student.surname} ${student.name} ${student.patronymic}  </td>
-                    <td>${student.email}</td>
-                    <td>${student.phone}</td>
-                    <td>${student.parentFullName}</td>
-                    <td>${student.parentEmail}</td>
-                    <td>${student.parentPhone}</td>
-                </tr>
-                <#else>
-                    <h3>Список студентов не добавлен</h3>
-                </#list>
-                </tbody>
-            </table>
+                    <tbody>
+                    <tr>
+                    <#list students as student>
+                        <th scope="row">${student.ordinalNumber}</th>
+                        <td>${student.surname} ${student.name} ${student.patronymic}  </td>
+                        <td>${student.email}</td>
+                        <td>${student.phone}</td>
+                        <td>${student.parentFullName}</td>
+                        <td>${student.parentEmail}</td>
+                        <td>${student.parentPhone}</td>
+                    </tr>
+                    <#else>
+                        <h3>Список студентов не добавлен</h3>
+                    </#list>
+                    </tbody>
+                </table>
 
             <#else>
-                <h3>Список студентов не добавлен</h3>
-                <br>
-                <form action="/group/${group.id}/file/upload" method="post" enctype="multipart/form-data">
-                    <div class="form-outline">
-                        <a class="btn btn-primary rounded-pill mb-3" role="button"
-                           href="/download/files/1"  download="" title="Скачать файл">Скачать шаблон со списком студентов</a>
-                    </div>
-<#--                    <a href="/download/files/1"  download="" title="всплывающая подсказка">скачать файл шаблон списка студентов</a>-->
-                    <select name="select-file" class="form-control border-0 mb-1  rounded shadow" id="group-edit">
-                        <#--                                        required="required" id="group-edit">-->
-                        <option value="0" label="--- Выбрать ---" />
-                        <#list files as file>
-                            <option value="${file.id}" label="${file.fileName}"></option>
-                        </#list>
-                    </select>
-                    <h5><label class="form-label">Список файлов преподавателя</label></h5>
-                    <div class="form-outline">
-                        <div class="custom-file">
-                            <input type="file" name="listStudentFile" id="form3Examplev5" class="form-control form-control-lg"/>
-                            <h5><label class="form-label" for="form3Examplev5">Загрузить новый список студентов</label></h5>
+                <h3 class="my-4">
+                    <p>Список студентов не добавлен</p>
+                    <form action="/group/${group.id}/file/upload" method="post" enctype="multipart/form-data">
+                        <div class="form-outline">
+                            <a class="btn btn-primary rounded-pill mb-3" role="button"
+                               href="/download/files/1"  download="" title="Скачать файл">Скачать шаблон со списком студентов</a>
                         </div>
-                    </div>
-<#--                    <input type="file" name="listStudentFile" value="Выбрать файл списка студентов"/>-->
-<#--                    <input type="hidden" name="_csrf" value="${_csrf.token}">-->
-<#--                    <input type="submit" value="Добавить список"/>-->
-                </form>
-
-
+    <#--                    <a href="/download/files/1"  download="" title="всплывающая подсказка">скачать файл шаблон списка студентов</a>-->
+                        <select name="select-file" class="form-control border-0 mb-1  rounded shadow" id="group-edit">
+                            <#--                                        required="required" id="group-edit">-->
+                            <option value="0" label="--- Выбрать ---" />
+                            <#list files as file>
+                                <option value="${file.id}" label="${file.fileName}"></option>
+                            </#list>
+                        </select>
+                        <h5><label class="form-label">Список файлов преподавателя</label></h5>
+                        <div class="form-outline">
+                            <div class="custom-file">
+                                <input type="file" name="listStudentFile" id="form3Examplev5" class="form-control form-control-lg"/>
+                                <h5><label class="form-label" for="form3Examplev5">Загрузить список студентов</label></h5>
+                            </div>
+                        </div>
+    <#--                    <input type="file" name="listStudentFile" value="Выбрать файл списка студентов"/>-->
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                        <button class="btn btn-primary rounded-pill px-4" type="submit">Добавить список студентов</button>
+                        <#--                    <input type="submit" value="Добавить список"/>-->
+                    </form>
+                </h3>
             </#if>
         </div>
     </section>

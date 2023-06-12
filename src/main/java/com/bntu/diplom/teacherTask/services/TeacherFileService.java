@@ -24,26 +24,30 @@ public class TeacherFileService {
     private final GroupService groupService;
     private final StudentService studentService;
     public void loadFile(Long idFile, Long idGroup, Principal principal, MultipartFile listStudentFile) throws IOException {
-        Group foundGroup = groupRepository.findById(idGroup).get();
-        Teacher teacher = groupService.getTeacherByPrincipal(principal);
-        if (idFile == 0) {
-            TeacherFile teacherFile = new TeacherFile(listStudentFile.getOriginalFilename(),
-                    listStudentFile.getSize(),
-                    listStudentFile.getContentType(),
-                    listStudentFile.getBytes(),
-                    FileType.STUDENT_LIST);
-            if (listStudentFile.getSize() != 0) {
-                teacher.addTeacherFileToTeacher(teacherFile);
+        try {
+            Group foundGroup = groupRepository.findById(idGroup).get();
+            Teacher teacher = groupService.getTeacherByPrincipal(principal);
+            if (idFile == 0) {
+                TeacherFile teacherFile = new TeacherFile(listStudentFile.getOriginalFilename(),
+                        listStudentFile.getSize(),
+                        listStudentFile.getContentType(),
+                        listStudentFile.getBytes(),
+                        FileType.STUDENT_LIST);
+                if (listStudentFile.getSize() != 0) {
+                    teacher.addTeacherFileToTeacher(teacherFile);
+                }
             }
-        }
 //        List<Teacher> teachers = foundGroup.getTeachers();
 //        teachers.add(teacher);
-        log.info("Saving new {} save teacher {}", foundGroup, groupService.getTeacherByPrincipal(principal));
-        if (idFile != 0) {
-            studentService.saveGroup(foundGroup, teacher.getId(),
-                    teacherFileRepository.findById(idFile).get().getBytes());
-        } else {
-            studentService.saveGroup(foundGroup, teacher.getId(), listStudentFile.getBytes());
+            log.info("Saving new {} save teacher {}", foundGroup, groupService.getTeacherByPrincipal(principal));
+            if (idFile != 0) {
+                studentService.saveGroup(foundGroup, teacher.getId(),
+                        teacherFileRepository.findById(idFile).get().getBytes());
+            } else {
+                studentService.saveGroup(foundGroup, teacher.getId(), listStudentFile.getBytes());
+            }
+        } catch (NullPointerException e) {
+            throw new RuntimeException("Вы не авторезированы");
         }
     }
 }

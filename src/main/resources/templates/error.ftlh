@@ -21,6 +21,11 @@
 
 <section class="vh-100 gradient-custom">
     <div class="container py-5 h-100">
+        <header class="d-flex  py-3">
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Группы</a></li>
+            </ul>
+        </header>
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                 <div class="card bg-indigo text-white" style="border-radius: 1rem;">

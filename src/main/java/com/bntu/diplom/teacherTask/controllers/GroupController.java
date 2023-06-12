@@ -208,7 +208,9 @@ public class GroupController {
     @PostMapping("/group/{id}/dis/com/task-list")
     public String composeTopicAndStudent(@PathVariable Long id, Model model, Principal principal){
         List<TeacherGroupTopic> teacherGroupTopicList = teacherGroupTopicRepository.findAll();
-
+        if (teacherGroupTopicList.size() == 0) {
+            throw new RuntimeException("Сначала нужно распределить задания");
+        }
         model.addAttribute("teacher", groupService.getTeacherByPrincipal(principal));
         model.addAttribute("group", groupService.getGroupById(id));
         model.addAttribute("composes", teacherGroupTopicList);

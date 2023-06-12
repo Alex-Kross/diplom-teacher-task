@@ -6,6 +6,8 @@ import com.bntu.diplom.teacherTask.repositories.TeacherGroupTopicRepository;
 import com.bntu.diplom.teacherTask.repositories.TopicRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.EmptyFileException;
+import org.apache.poi.openxml4j.exceptions.OLE2NotOfficeXmlFileException;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
@@ -16,6 +18,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +48,8 @@ public class TopicService {
                 var++;
             }
             topicRepository.saveAll(topics);
+        } catch (EmptyFileException e) {
+            throw new RuntimeException("Сначала загрузите файл");
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -81,6 +86,7 @@ public class TopicService {
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
                 XWPFDocument document = new XWPFDocument(byteArrayInputStream);
                 List<XWPFParagraph> paragraphs = document.getParagraphs();
+                boolean isExistMarker = false;
                 for (XWPFParagraph paragraph: paragraphs) {
                     for (XWPFRun run : paragraph.getRuns()) {
                         if(run.getText(0) != null){
@@ -90,18 +96,25 @@ public class TopicService {
                                         + student.getName()
                                         + " "
                                         + student.getPatronymic(), 0);
+                                isExistMarker = true;
                             }
                             if (run.getText(0).equals("{group}")) {
                                 run.setText(group.getName(), 0);
+                                isExistMarker = true;
                             }
                             if (run.getText(0).equals("{variant}")) {
                                 run.setText(String.valueOf(topic.getVariant()), 0);
+                                isExistMarker = true;
                             }
                             if (run.getText(0).equals("{topic}")) {
                                 run.setText(topic.getTitle(), 0);
+                                isExistMarker = true;
                             }
                         }
                     }
+                }
+                if (!isExistMarker) {
+                    throw new RuntimeException("В файле не найдено маркеров");
                 }
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 document.write(byteArrayOutputStream);
@@ -117,6 +130,10 @@ public class TopicService {
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        }catch (OLE2NotOfficeXmlFileException e) {
+            throw new RuntimeException("Выбран не верный формат файла");
+        } catch (EmptyFileException e) {
+            throw new RuntimeException("Сначала вам нужно выбрать файл");
         }
         teacherGroupTopicRepository.saveAll(teacherGroupTopicList);
         return teacherGroupTopicList;
