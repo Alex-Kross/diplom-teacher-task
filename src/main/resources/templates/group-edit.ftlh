@@ -16,8 +16,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel='stylesheet' href='/static/css/group-edit-style.css'>
 </head>
-<body>
-    <section class="vh-100 gradient-custom">
+<body class="gradient-custom">
+    <section class="vh-100">
         <div class="container">
             <header class="d-flex  py-3">
             <#if teacher.email??>

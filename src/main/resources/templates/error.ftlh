@@ -17,9 +17,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel='stylesheet' href='/static/css/style-login.css'>
 </head>
-<body>
+<body class="gradient-custom">
 
-<section class="vh-100 gradient-custom">
+<section class="vh-100">
     <div class="container py-5 h-100">
         <header class="d-flex  py-3">
             <ul class="nav nav-pills">

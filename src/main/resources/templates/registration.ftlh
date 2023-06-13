@@ -14,9 +14,9 @@
         <link rel='stylesheet' href='/static/css/style.css'>
     </head>
 </head>
-<body>
+<body class="gradient-custom">
     <form action="/registration" method="post">
-        <section class="h-100 h-custom gradient-custom-2">
+        <section class="h-100 h-custom">
             <div class="container py-5 h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-12">

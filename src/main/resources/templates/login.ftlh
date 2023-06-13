@@ -16,7 +16,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel='stylesheet' href='/static/css/style-login.css'>
 </head>
-<body>
+<body class="gradient-custom">
 <#--<h1>BUYSELL</h1><hr>-->
 <#--<h4>Авторизация</h4>-->
 <#--<form action="/login" method="post">-->
@@ -26,7 +26,7 @@
 <#--    <input type="submit" value="Вход"/>-->
 <#--</form>-->
 <#--<a href="/registration">Зарегистрироваться</a>-->
-<section class="vh-100 gradient-custom">
+<section class="vh-100">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
