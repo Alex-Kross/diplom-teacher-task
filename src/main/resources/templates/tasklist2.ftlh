@@ -51,8 +51,8 @@
                 </tr>
                 </thead>
                 <tbody>
+                <#list composes as compose>
                 <tr>
-                    <#list composes as compose>
                     <th scope="row">${compose.groupStudentTeacher.student.ordinalNumber}</th>
                     <td>${compose.groupStudentTeacher.student.surname}
                         ${compose.groupStudentTeacher.student.name}
@@ -64,8 +64,8 @@
                             ${compose.fileName}
                         </a>
                     </td>
-                    </#list>
                 </tr>
+                </#list>
                 </tbody>
             </table>
             <div class="form-outline">

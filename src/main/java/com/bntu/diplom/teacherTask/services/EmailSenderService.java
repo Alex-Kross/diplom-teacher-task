@@ -46,8 +46,6 @@ public class EmailSenderService {
 //                fileSystemResource);
             javaMailSender.send(mimeMessage);
             System.out.printf("Mail with attachment sent successfully..");
-            //это сообщение об успещности
-            throw new RuntimeException("Листы задания успешно отправлены");
         } catch (MessagingException e) {
             throw new IllegalStateException("fail to send email");
         }

@@ -129,16 +129,21 @@ public class FileController {
     @GetMapping("/send/task-lists")
     private void sendTaskListToStudents() throws MessagingException {
         List<TeacherGroupTopic> teacherGroupTopicList = teacherGroupTopicRepository.findAll();
-        TeacherGroupTopic teacherGroupTopic = teacherGroupTopicList.get(0);
-        String surname = teacherGroupTopic.getGroupStudentTeacher().getTeacher().getSurname();
-        String name = teacherGroupTopic.getGroupStudentTeacher().getTeacher().getName();
-        String patronymic = teacherGroupTopic.getGroupStudentTeacher().getTeacher().getPatronymic();
-        emailSenderService.sendTskListToAllStudents(
-                "karpukartem0001@gmail.com",
-                "Лист задания для курсовой работы от " + surname + " " + name + " " + patronymic,
-                teacherGroupTopic);
+        for (TeacherGroupTopic teacherGroupTopic : teacherGroupTopicList) {
+            String surname = teacherGroupTopic.getGroupStudentTeacher().getTeacher().getSurname();
+            String name = teacherGroupTopic.getGroupStudentTeacher().getTeacher().getName();
+            String patronymic = teacherGroupTopic.getGroupStudentTeacher().getTeacher().getPatronymic();
+            String email = teacherGroupTopic.getGroupStudentTeacher().getStudent().getEmail();
+            emailSenderService.sendTskListToAllStudents(
+                    email,
+                    "Лист задания для курсовой работы. Преподаватель - " + surname + " " + name + " " + patronymic,
+                    teacherGroupTopic);
+        }
+        //это сообщение об успещности
+        throw new RuntimeException("Листы задания успешно отправлены");
 
     }
+
     public MinIOService getMinIOService() {
         return minIOService;
     }
