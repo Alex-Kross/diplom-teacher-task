@@ -64,12 +64,16 @@
                             ${compose.fileName}
                         </a>
                     </td>
+                    </#list>
                 </tr>
-                <#else>
-                    <h3>Список студентов не добавлен</h3>
-                </#list>
                 </tbody>
             </table>
+            <div class="form-outline">
+                <a class="btn btn-primary rounded-pill mb-3" role="button"
+                   href="/send/task-lists"
+                   title="Отправить листы задания">Отправить студентам</a>
+            </div>
+
             <#else>
                 <div class="form-outline">
                     <a class="btn btn-primary rounded-pill mb-3" role="button"

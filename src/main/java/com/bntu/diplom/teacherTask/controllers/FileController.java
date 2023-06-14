@@ -5,6 +5,7 @@ import com.bntu.diplom.teacherTask.models.TeacherFile;
 import com.bntu.diplom.teacherTask.models.TeacherGroupTopic;
 import com.bntu.diplom.teacherTask.repositories.TeacherFileRepository;
 import com.bntu.diplom.teacherTask.repositories.TeacherGroupTopicRepository;
+import com.bntu.diplom.teacherTask.services.EmailSenderService;
 import com.bntu.diplom.teacherTask.services.GroupService;
 import com.bntu.diplom.teacherTask.services.MinIOService;
 import com.bntu.diplom.teacherTask.services.TeacherFileService;
@@ -19,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -34,6 +36,7 @@ public class FileController {
     private final TeacherFileRepository teacherFileRepository;
     private final TeacherFileService teacherFileService;
     private final GroupService groupService;
+    private final EmailSenderService emailSenderService;
 
     private final TeacherGroupTopicRepository teacherGroupTopicRepository;
     private MinIOService minIOService = new MinIOService();
@@ -123,6 +126,19 @@ public class FileController {
         return "redirect:/group/{id}";
     }
 
+    @GetMapping("/send/task-lists")
+    private void sendTaskListToStudents() throws MessagingException {
+        List<TeacherGroupTopic> teacherGroupTopicList = teacherGroupTopicRepository.findAll();
+        TeacherGroupTopic teacherGroupTopic = teacherGroupTopicList.get(0);
+        String surname = teacherGroupTopic.getGroupStudentTeacher().getTeacher().getSurname();
+        String name = teacherGroupTopic.getGroupStudentTeacher().getTeacher().getName();
+        String patronymic = teacherGroupTopic.getGroupStudentTeacher().getTeacher().getPatronymic();
+        emailSenderService.sendTskListToAllStudents(
+                "karpukartem0001@gmail.com",
+                "Лист задания для курсовой работы от " + surname + " " + name + " " + patronymic,
+                teacherGroupTopic);
+
+    }
     public MinIOService getMinIOService() {
         return minIOService;
     }

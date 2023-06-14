@@ -42,8 +42,11 @@ public class MinIOService {
             InternalException {
         minioClient =
                 MinioClient.builder()
-                        .endpoint("https://play.min.io")
-                        .credentials("Q3AM3UQ867SPQQA43P2F", "zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG")
+                  .endpoint("http://89.38.128.5:9000")
+                .credentials("fafafa", "fafafa16")
+
+//                        .endpoint("http://89.38.128.5:9001/")
+//                        .credentials("Q3AM3UQ867SPQQA43P2F", "zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG")
                         .build();
         return minioClient.bucketExists(BucketExistsArgs.builder().bucket("file-teacher-task").build());
     }

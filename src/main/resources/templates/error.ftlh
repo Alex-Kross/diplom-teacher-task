@@ -26,12 +26,17 @@
                 <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">Группы</a></li>
             </ul>
         </header>
+
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                 <div class="card bg-indigo text-white" style="border-radius: 1rem;">
                     <div class="card-body p-5 text-center ">
                         <div class="mb-md-5 mt-md-4 pb-5">
+                            <#if message??>
                             <h1 class="fw-bold mb-2 text-uppercase">${message.getMessage()}</h1>
+                                <#else>
+                                    <h1 class="fw-bold mb-2 text-uppercase">Произошла ошибка</h1>
+                            </#if>
                         </div>
                     </div>
                 </div>

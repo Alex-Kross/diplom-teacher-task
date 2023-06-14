@@ -230,7 +230,7 @@ public class GroupController {
         model.addAttribute("compose", teacherGroupTopicList.get(0));
 
         return "tasklist2";
-//        return "redirect:/group/{id}/dis/com/task-list";
+//        return "redirect:/group/"+id.toString()+"/dis/com/task-list";
     }
 }
 
